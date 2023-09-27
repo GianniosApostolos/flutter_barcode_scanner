@@ -50,6 +50,7 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
     private float left, top, endY;
     private int rectWidth, rectHeight, frames, lineColor, lineWidth;
     private boolean revAnimation;
+    private String scanResult;
 
 
     public static abstract class Graphic {
@@ -99,6 +100,11 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
         frames = AppConstants.BARCODE_FRAMES;
     }
 
+    public void setScanResult(String scanResult) {
+
+        this.scanResult = scanResult;
+        
+    }
 
     public void clear() {
         synchronized (mLock) {
@@ -157,13 +163,49 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
         super.onDraw(canvas);
 
         // draw transparent rect
-        int cornerRadius = 0;
+        int cornerRadius = 10;
         Paint eraser = new Paint();
         eraser.setAntiAlias(true);
         eraser.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 
         RectF rect = new RectF(left, top, AppUtil.dpToPx(getContext(), rectWidth) + left, AppUtil.dpToPx(getContext(), rectHeight) + top);
         canvas.drawRoundRect(rect, (float) cornerRadius, (float) cornerRadius, eraser);
+
+        String scanResultText =this.scanResult;
+        // draw result text
+        if(scanResultText != null && !scanResultText.trim().isEmpty()) {
+            //int alpha = (int) (255 * 0.8);
+
+            String blackTransparentColor = String.format("#%02X000000", (int) (255 * 0.8));
+            Paint backgroundColor = new Paint();
+            backgroundColor.setColor(Color.parseColor(blackTransparentColor));
+
+            // Create text
+            Paint textPaint = new Paint();     
+            float textWidth = textPaint.measureText(scanResultText);   
+               
+            float textSize = ((rectWidth * rectHeight) / (rectWidth + rectHeight)) / 1.5f; // Change to 2f 
+            float textPosX = (canvas.getWidth()/2 - textWidth*2);
+            float textPosY =  top + AppUtil.dpToPx(getContext(), rectHeight) + rectHeight;
+            
+            textPaint.setColor(Color.parseColor("#ffffff"));
+            
+            textPaint.setTextSize(textSize);
+
+            // Create background for text
+            float rectStartPosX = textPosX - textPosX/10;
+            float rectStartPosY = textPosY - textPosY/12;
+            float rectEndPosX = canvas.getWidth()/2 + textWidth*2+textPosX/10;
+            float rectEndPosY = textPosY + textSize+10;
+
+            RectF backgroundRectangle = new RectF(rectStartPosX, rectStartPosY, rectEndPosX, rectEndPosY);
+            //RectF rectF = new RectF((textPosX-textPosX/10),(textPosY-textPosY/12),(canvas.getWidth()/2 + textWidth*2+textPosX/10),(textPosY+textSize+10));
+
+            // Draw background rectangle and scan result text
+            canvas.drawRoundRect(backgroundRectangle, 70f, 70f, backgroundColor);
+            canvas.drawText(scanResultText, textPosX, textPosY, textPaint);
+        }
+
 
         // draw horizontal line
         Paint line = new Paint();
@@ -183,6 +225,7 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
         } else {
             endY += frames;
         }
+    
         canvas.drawLine(left, endY, left + AppUtil.dpToPx(getContext(), rectWidth), endY, line);
         invalidate();
     }

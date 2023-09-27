@@ -16,7 +16,6 @@
 package com.amolg.flutterbarcodescanner;
 
 import android.Manifest;
-import android.media.MediaPlayer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -82,6 +81,8 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
     private CameraSourcePreview mPreview;
     private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
 
+    private boolean readyToScan = false;
+
     // helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
     private GestureDetector gestureDetector;
@@ -131,6 +132,10 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
 
         imgViewSwitchCamera = findViewById(R.id.imgViewSwitchCamera);
         imgViewSwitchCamera.setOnClickListener(this);
+
+        Button btnScanBarcode = findViewById(R.id.btnScanBarcode);
+        btnScanBarcode.setOnClickListener(this);
+
 
         mPreview = findViewById(R.id.preview);
         mGraphicOverlay = findViewById(R.id.graphicOverlay);
@@ -412,6 +417,25 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
         return false;
     }
 
+
+    private void onTapScanButton() {
+
+        Barcode barcode = null;
+
+        for (BarcodeGraphic graphic : mGraphicOverlay.getGraphics()) {
+            
+            barcode = graphic.getBarcode();
+            
+        }
+            
+        if (barcode != null) {
+            Intent data = new Intent();
+            data.putExtra(BarcodeObject, barcode);
+            setResult(CommonStatusCodes.SUCCESS, data);
+            finish();
+        }
+    }
+
     @Override
     public void onClick(View v) {
         int i = v.getId();
@@ -443,6 +467,12 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
             boolean useFlash = flashStatus == USE_FLASH.ON.ordinal();
             createCameraSource(autoFocus, useFlash, getInverseCameraFacing(currentFacing));
             startCameraSource();
+        } else if (i == R.id.btnScanBarcode){
+
+            readyToScan=true;
+
+            onTapScanButton();
+
         }
     }
 
@@ -482,6 +512,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
     private class CaptureGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
+            readyToScan=true;
             return onTap(e.getRawX(), e.getRawY()) || super.onSingleTapConfirmed(e);
         }
     }
@@ -542,17 +573,20 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
 
     @Override
     public void onBarcodeDetected(Barcode barcode) {
-        if (null != barcode) {
-            if (FlutterBarcodeScannerPlugin.isContinuousScan) {
-                FlutterBarcodeScannerPlugin.onBarcodeScanReceiver(barcode);
-            } else {
-                MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.beep);
-                mp.start();
-                Intent data = new Intent();
-                data.putExtra(BarcodeObject, barcode);
-                setResult(CommonStatusCodes.SUCCESS, data);
-                finish();
+
+        mGraphicOverlay.setScanResult(barcode.rawValue);
+
+        if(readyToScan){
+            if (null != barcode) {
+                if (FlutterBarcodeScannerPlugin.isContinuousScan) {
+                    FlutterBarcodeScannerPlugin.onBarcodeScanReceiver(barcode);
+                } else {
+                    Intent data = new Intent();
+                    data.putExtra(BarcodeObject, barcode);
+                    setResult(CommonStatusCodes.SUCCESS, data);
+                    finish();
+                }
             }
-        }
+       }
     }
 }
