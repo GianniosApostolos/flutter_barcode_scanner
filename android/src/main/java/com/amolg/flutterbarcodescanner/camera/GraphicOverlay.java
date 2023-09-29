@@ -172,20 +172,23 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
         canvas.drawRoundRect(rect, (float) cornerRadius, (float) cornerRadius, eraser);
 
         String scanResultText =this.scanResult;
+        String hintText = "Tap on the screen to scan the barcode";
+
         // draw result text
         if(scanResultText != null && !scanResultText.trim().isEmpty()) {
-            //int alpha = (int) (255 * 0.8);
 
             String blackTransparentColor = String.format("#%02X000000", (int) (255 * 0.8));
             Paint backgroundColor = new Paint();
             backgroundColor.setColor(Color.parseColor(blackTransparentColor));
 
-            // Create text
+
+            // Create barcode preview text
             Paint textPaint = new Paint();     
             float textWidth = textPaint.measureText(scanResultText);   
                
-            float textSize = ((rectWidth * rectHeight) / (rectWidth + rectHeight)) / 1.5f; // Change to 2f 
-            float textPosX = (canvas.getWidth()/2 - textWidth*2);
+            float textSize = ((rectWidth * rectHeight) / (rectWidth + rectHeight)) / 1.5f;
+            textPaint.setTextAlign(Paint.Align.CENTER);
+            float textPosX = (canvas.getWidth()/2f);
             float textPosY =  top + AppUtil.dpToPx(getContext(), rectHeight) + rectHeight;
             
             textPaint.setColor(Color.parseColor("#ffffff"));
@@ -193,17 +196,28 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
             textPaint.setTextSize(textSize);
 
             // Create background for text
-            float rectStartPosX = textPosX - textPosX/10;
-            float rectStartPosY = textPosY - textPosY/12;
-            float rectEndPosX = canvas.getWidth()/2 + textWidth*2+textPosX/10;
-            float rectEndPosY = textPosY + textSize+10;
+            float rectStartPosX = (canvas.getWidth()/2f - textWidth*2) - (canvas.getWidth()/2f - textWidth*2f)/10f;
+            float rectStartPosY = textPosY - textPosY/12f;
+            float rectEndPosX = canvas.getWidth()/2f + textWidth*2+textPosX/10f;
+            float rectEndPosY = textPosY + textSize+10f;
 
             RectF backgroundRectangle = new RectF(rectStartPosX, rectStartPosY, rectEndPosX, rectEndPosY);
-            //RectF rectF = new RectF((textPosX-textPosX/10),(textPosY-textPosY/12),(canvas.getWidth()/2 + textWidth*2+textPosX/10),(textPosY+textSize+10));
 
-            // Draw background rectangle and scan result text
+            // Create hint text
+            Paint hintTextPaint = new Paint();
+            float hintTextWidth = hintTextPaint.measureText(hintText);
+            float hintTextSize = ((rectWidth * rectHeight) / (rectWidth + rectHeight)) / 2f;
+            hintTextPaint.setTextAlign(Paint.Align.CENTER);
+            float hintTextPosX = (canvas.getWidth()/2f);
+            float hintTextPosY =  rectEndPosY + rectEndPosY*0.07f;
+
+            hintTextPaint.setColor(Color.parseColor("#ffffff"));
+            hintTextPaint.setTextSize(hintTextSize);
+
+            // Draw background rectangle, scan result text and hint text
             canvas.drawRoundRect(backgroundRectangle, 70f, 70f, backgroundColor);
             canvas.drawText(scanResultText, textPosX, textPosY, textPaint);
+            canvas.drawText(hintText, hintTextPosX, hintTextPosY, hintTextPaint);
         }
 
 

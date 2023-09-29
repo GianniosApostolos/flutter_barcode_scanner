@@ -21,59 +21,47 @@
 
     </com.amolg.flutterbarcodescanner.camera.CameraSourcePreview>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/layoutBottom"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/black"
-        android:orientation="horizontal">
+        android:background="@android:color/black">
 
         <ImageView
             android:id="@+id/imgViewSwitchCamera"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:contentDescription="Switch camera"
             android:src="@drawable/ic_switch_camera"
-            android:layout_gravity="center_horizontal|center" 
-            android:layout_weight="1" />
+            android:layout_alignParentStart="true" />
 
         <ImageView
             android:id="@+id/imgViewBarcodeCaptureUseFlash"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_centerInParent="true"
             android:contentDescription="Flash button"
-            android:src="@drawable/ic_barcode_flash_off"
-            android:layout_gravity="center_horizontal|center"
-            android:layout_weight="1" />
-
-            <Button
-            android:id="@+id/btnScanBarcode"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@android:color/transparent"
-            android:text="Scan"
-            android:textAllCaps="true"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center_horizontal|center"
-            android:layout_weight="1" />
-
+            android:src="@drawable/ic_barcode_flash_off" />
 
         <Button
             android:id="@+id/btnBarcodeCaptureCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:background="@android:color/transparent"
             android:text="Cancel"
             android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center_horizontal|center"
-            android:layout_weight="1" />
-    </LinearLayout>
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
 </RelativeLayout>
