@@ -81,7 +81,8 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
     private CameraSourcePreview mPreview;
     private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
 
-    private boolean readyToScan = false;
+    private boolean isReadyToScan = false;
+    private boolean isBarcodeDetected = false;
 
     // helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
@@ -483,7 +484,13 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
     private class CaptureGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            readyToScan=true;
+            
+            if(isBarcodeDetected){
+
+                isReadyToScan=true;
+
+            }
+
             return onTap(e.getRawX(), e.getRawY()) || super.onSingleTapConfirmed(e);
         }
     }
@@ -545,9 +552,12 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
     @Override
     public void onBarcodeDetected(Barcode barcode) {
 
+        isBarcodeDetected=true;
+
         mGraphicOverlay.setScanResult(barcode.rawValue);
 
-        if(readyToScan){
+        if(isReadyToScan){
+
             if (null != barcode) {
                 if (FlutterBarcodeScannerPlugin.isContinuousScan) {
                     FlutterBarcodeScannerPlugin.onBarcodeScanReceiver(barcode);
@@ -558,6 +568,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
                     finish();
                 }
             }
+
        }
     }
 
@@ -566,7 +577,8 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
     public void onBarcodeMissing() {
 
         mGraphicOverlay.setScanResult(null);
-    
+        isBarcodeDetected=false;
+        isReadyToScan=false;
     }
 
 }
