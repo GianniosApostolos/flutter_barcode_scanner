@@ -92,7 +92,7 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
 
         rectWidth = AppConstants.BARCODE_RECT_WIDTH;
         rectHeight = BarcodeCaptureActivity.SCAN_MODE == BarcodeCaptureActivity.SCAN_MODE_ENUM.QR.ordinal()
-                ? AppConstants.BARCODE_RECT_HEIGHT : (int) (AppConstants.BARCODE_RECT_HEIGHT / 1.5);
+                ? (int) (AppConstants.BARCODE_RECT_HEIGHT / 1.5) : (int) (AppConstants.BARCODE_RECT_HEIGHT / 1.5);
 
         lineColor = Color.parseColor(FlutterBarcodeScannerPlugin.lineColor);
 
@@ -172,7 +172,9 @@ public class GraphicOverlay<T extends GraphicOverlay.Graphic> extends View {
         canvas.drawRoundRect(rect, (float) cornerRadius, (float) cornerRadius, eraser);
 
         String scanResultText =this.scanResult;
-        String hintText = "Tap on the screen to scan the barcode";
+        String hintText = (BarcodeCaptureActivity.SCAN_MODE == BarcodeCaptureActivity.SCAN_MODE_ENUM.QR.ordinal())
+                            ? "Tap on the screen to scan the QR code"
+                            : "Tap on the screen to scan the barcode";
 
         // draw result text
         if(scanResultText != null && !scanResultText.trim().isEmpty()) {

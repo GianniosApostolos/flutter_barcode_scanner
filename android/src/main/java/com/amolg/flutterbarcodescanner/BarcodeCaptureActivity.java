@@ -224,7 +224,8 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
             frameHeight = AppUtil.dpToPx(context, (int) (AppConstants.BARCODE_RECT_HEIGHT / 1.5));
         } else if (SCAN_MODE == SCAN_MODE_ENUM.QR.ordinal()) {
             frameWidth = AppUtil.dpToPx(context, AppConstants.BARCODE_RECT_WIDTH);
-            frameHeight = AppUtil.dpToPx(context, AppConstants.BARCODE_RECT_HEIGHT);
+            frameHeight = AppUtil.dpToPx(context, (int) (AppConstants.BARCODE_RECT_HEIGHT / 1.5));
+
         } else {
             frameWidth = 0;
             frameHeight = 0;
