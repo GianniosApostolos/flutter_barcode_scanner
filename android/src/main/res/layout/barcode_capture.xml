@@ -31,16 +31,16 @@
     android:gravity="center">
 
     <TextView
-        android:id="@+id/lastScannedText"
+        android:id="@+id/footerLastScanText"
         android:layout_alignParentStart="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Last scanned: "
+        android:text="Previous Scan: "
         android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/lastScannedResult"
+        android:id="@+id/lastScanResultString"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
