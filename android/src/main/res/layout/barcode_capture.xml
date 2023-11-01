@@ -9,7 +9,7 @@
 
     <com.amolg.flutterbarcodescanner.camera.CameraSourcePreview
         android:id="@+id/preview"
-        android:layout_above="@+id/layoutBottom"
+        android:layout_above="@+id/upperRow"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -17,9 +17,35 @@
             android:id="@+id/graphicOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#44000000" />
+            android:background="#70000000" />
 
     </com.amolg.flutterbarcodescanner.camera.CameraSourcePreview>
+
+<LinearLayout
+    android:id="@+id/upperRow"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="horizontal"
+    android:layout_above="@+id/layoutBottom"
+    android:background="@android:color/black"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/footerLastScanText"
+        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Previous Scan: "
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/lastScanResultString"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@android:color/white" />
+</LinearLayout>
 
     <RelativeLayout
         android:id="@+id/layoutBottom"
@@ -45,6 +71,7 @@
             android:id="@+id/imgViewBarcodeCaptureUseFlash"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:contentDescription="Flash button"
             android:src="@drawable/ic_barcode_flash_off" />

@@ -46,6 +46,7 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -90,6 +91,8 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
 
     private ImageView imgViewBarcodeCaptureUseFlash;
     private ImageView imgViewSwitchCamera;
+    private TextView footerLastScanText;
+    private TextView lastScanResultString;
 
     public static int SCAN_MODE = SCAN_MODE_ENUM.QR.ordinal();
 
@@ -133,6 +136,13 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
 
         imgViewSwitchCamera = findViewById(R.id.imgViewSwitchCamera);
         imgViewSwitchCamera.setOnClickListener(this);
+
+        // Only show "Last Scanned :" text if last scan result is not empty. Meaning, if user has scanned something.
+        footerLastScanText = findViewById(R.id.footerLastScanText);
+        footerLastScanText.setVisibility(FlutterBarcodeScannerPlugin.previousScanResult.isEmpty() ? View.GONE : View.VISIBLE);
+
+        lastScanResultString = findViewById(R.id.lastScanResultString);
+        lastScanResultString.setText(FlutterBarcodeScannerPlugin.previousScanResult);
         
         mPreview = findViewById(R.id.preview);
         mGraphicOverlay = findViewById(R.id.graphicOverlay);
