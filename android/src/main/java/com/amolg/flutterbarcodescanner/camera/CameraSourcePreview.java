@@ -141,13 +141,14 @@ public class CameraSourcePreview extends ViewGroup {
         } else {
             width = right - left;
             height = bottom - top;
+            height = (int) (height * 0.3);
         }
 
         if (mCameraSource != null) {
             Size size = mCameraSource.getPreviewSize();
             if (size != null) {
                 width = size.getWidth();
-                height = size.getHeight();
+                height = (int) (size.getHeight() * 0.3);
             }
         }
 
