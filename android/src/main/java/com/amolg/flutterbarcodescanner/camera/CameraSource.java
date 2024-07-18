@@ -849,6 +849,7 @@ public class CameraSource {
             float previewAspectRatio = (float) previewSize.width / (float) (previewSize.height * 0.3);
 
             for (android.hardware.Camera.Size pictureSize : supportedPictureSizes) {
+                pictureSize.height = (float) (pictureSize.height * 0.3);
                 float pictureAspectRatio = (float) pictureSize.width / (float) pictureSize.height;
                 if (Math.abs(previewAspectRatio - pictureAspectRatio) < ASPECT_RATIO_TOLERANCE) {
                     validPreviewSizes.add(new SizePair(previewSize, pictureSize));
