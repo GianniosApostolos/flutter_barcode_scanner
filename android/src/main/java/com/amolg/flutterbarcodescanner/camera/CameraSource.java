@@ -1047,9 +1047,11 @@ public class CameraSource {
         Camera.Size optimalSize = null;
         double minDiff = Double.MAX_VALUE;
 
-        int targetHeight = h;
+        int targetHeight = h * 0.3;
 
         for (Camera.Size size : sizes) {
+            size.height = size.height * 0.3;
+
             double ratio = (double) size.width / size.height;
             if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
             if (Math.abs(size.height - targetHeight) < minDiff) {
