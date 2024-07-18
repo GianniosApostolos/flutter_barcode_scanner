@@ -70,8 +70,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -80,7 +78,6 @@ class _MyAppState extends State<MyApp> {
         body: Builder(
           builder: (BuildContext context) {
             return Container(
-              height: screenHeight,
               alignment: Alignment.center,
               child: Flex(
                 direction: Axis.vertical,
